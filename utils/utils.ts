@@ -14,3 +14,18 @@ export function encodedRedirect(
 ) {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
 }
+
+export function formatDate(timestamp: number | null | undefined) {
+  if (!timestamp) {
+    return;
+  }
+  const date = new Date(timestamp);
+  return date.toLocaleString("en-EU", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
