@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { formatDate } from "../../utils/utils";
+import { Button } from "@/components/ui/button";
 
 export type Todo = {
   id: number;
@@ -19,7 +20,10 @@ export default function TodoClient() {
 
   useEffect(() => {
     async function fetchData() {
-      let { data: todo, error } = await supabase.from("todo").select("*");
+      let { data: todo, error } = await supabase
+        .from("todo")
+        .select("*")
+        .is("deleted", null); // where deleted is null
       if (error) {
         console.error(error);
         return;
@@ -30,6 +34,23 @@ export default function TodoClient() {
 
     fetchData();
   }, []);
+
+  async function deleteTodo(id: number) {
+    // console.log("Deleting todo with id:", id);
+
+    const { data, error } = await supabase
+      .from("todo")
+      .update({ deleted: new Date() })
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      console.error("Error deleting:", error);
+      return;
+    }
+
+    setTodo(todo.filter((todo) => todo.id !== id));
+  }
 
   if (!todo || todo.length === 0) return <h1>No todos Found! :(</h1>;
   return (
@@ -52,6 +73,14 @@ export default function TodoClient() {
                 <td className="px-4 py-2">{todo.content}</td>
                 <td className="px-4 py-2">
                   {formatDate(todo.created_at as unknown as number)}
+                </td>
+                <td className="px-4 py-2">
+                  <Button
+                    variant={"destructive"}
+                    size={"icon"}
+                    onClick={() => deleteTodo(todo.id)}>
+                    X
+                  </Button>
                 </td>
               </tr>
             ))}
