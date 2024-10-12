@@ -1,16 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { formatDate } from "@/utils/utils";
-import { Button } from "../ui/button";
-import DeleteTodo from "./DeleteTodo";
+import { Todo } from "./TodoClient";
 
 const supabase = createClient();
 
-export default async function TodoServer() {
-  let { data: todo, error } = await supabase
-    .from("todo")
-    .select("*")
-    .is("deleted", null);
-
+export default async function TodoServer({ todos }: { todos: Todo[] }) {
   // Delete is not possible in server components. Needs state.
   // async function deleteTodo(id: number) {
   //   const { data, error } = await supabase
@@ -19,7 +13,7 @@ export default async function TodoServer() {
   //     .eq("id", id)
   //     .select();
   // }
-  if (!todo || todo.length === 0) return <h1>No todos Found! :(</h1>;
+  if (!todos || todos.length === 0) return <h1>No todos Found! :(</h1>;
 
   return (
     <>
@@ -34,17 +28,15 @@ export default async function TodoServer() {
             </tr>
           </thead>
           <tbody>
-            {todo.map((todo) => (
+            {todos.map((todo) => (
               <tr key={todo.id} className="border border-gray-300">
                 <td className="px-4 py-2">{todo.id}</td>
                 <td className="px-4 py-2">{todo.title}</td>
                 <td className="px-4 py-2">{todo.content}</td>
-                <td className="px-4 py-2">{formatDate(todo.created_at)}</td>
                 <td className="px-4 py-2">
-                  <Button variant={"destructive"} size={"icon"}>
-                    I no work
-                  </Button>
+                  {formatDate(todo.created_at as unknown as number)}
                 </td>
+                <td className="px-4 py-2"></td>
               </tr>
             ))}
           </tbody>
