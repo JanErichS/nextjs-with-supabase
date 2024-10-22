@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { formatDate } from "@/utils/utils";
-import { Todo } from "./TodoClient";
+import { Todo } from "@/@types/todo.types";
 
 const supabase = createClient();
 

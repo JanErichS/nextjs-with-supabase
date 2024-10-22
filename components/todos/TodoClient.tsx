@@ -4,15 +4,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { formatDate } from "../../utils/utils";
 import { Button } from "@/components/ui/button";
+import { Todo } from "@/@types/todo.types";
 
-export type Todo = {
-  id: number;
-  title: string;
-  content: string;
-  created_at: Date;
-  updated_at: Date | null;
-  deleted_at: Date | null;
-};
 
 export default function TodoClient() {
   const [todo, setTodo] = useState<Todo[]>([]);
