@@ -1,12 +1,7 @@
 
+import { UserDetails } from "@/@types/user.types";
 import { createContext, useContext } from "react";
 
-type UserDetails = {
-    username: string;
-    email?: string;
-    name: string;
-
-}
 export const UserContext = createContext<UserDetails | undefined>(undefined);
 
 export const useUserContext = () => {
