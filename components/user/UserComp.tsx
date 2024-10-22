@@ -1,8 +1,12 @@
 import { useUserContext } from "@/app/context";
 
-export default function User() {
+const User = () => {
   const user = useUserContext();
-  
+
+  if (!user) {
+    return <p>No user data available.</p>;
+  }
+
   return (
     <div className="max-w-md mx-auto p-4 mt-4 bg-white rounded shadow-md">
       <h1 className="text-2xl font-bold mb-4">User Profile</h1>
@@ -28,4 +32,6 @@ export default function User() {
       </div>
     </div>
   );
-}
+};
+
+export default User;
